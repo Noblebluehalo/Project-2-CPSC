@@ -1,4 +1,4 @@
-# Prog1.py - Predictive Parser for arithmetic expressions with user input
+# Prog1.py - Predictive Parser for arithmetic expressions with detailed stack trace
 
 parsing_table = {
     'E': {'a': ['T', 'Q'], '(': ['T', 'Q']},
@@ -14,13 +14,17 @@ def predictive_parse(input_string):
     input_string = list(input_string)
     stack = ['$', 'E']
     index = 0
-    print("\nStack\t\tInput\t\tAction")
-    print("------------------------------------------")
+    step = 1
+
+    print(f"{'Step':<5}{'Stack':<20}{'Input':<20}{'Action'}")
+    print("-" * 60)
 
     while len(stack) > 0:
         top = stack[-1]
         current_input = input_string[index] if index < len(input_string) else '$'
-        print(f"{''.join(stack):<16}{''.join(input_string[index:]):<16}", end='')
+        stack_content = ''.join(stack)
+        input_remaining = ''.join(input_string[index:])
+        print(f"{step:<5}{stack_content:<20}{input_remaining:<20}", end='')
 
         if top == current_input == '$':
             print("Accepted")
@@ -42,6 +46,7 @@ def predictive_parse(input_string):
         else:
             print(f"Error: No rule for {top} with lookahead '{current_input}'")
             break
+        step += 1
 
 # === Run with user input ===
 if __name__ == "__main__":
